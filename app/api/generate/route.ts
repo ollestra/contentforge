@@ -3,7 +3,7 @@ import { createClient, createServiceClient } from '@/lib/supabase/server'
 import type { GenerateRequest, Platform } from '@/types/database'
 
 export async function POST(request: NextRequest) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const service = createServiceClient()
 
   const { data: { user } } = await supabase.auth.getUser()

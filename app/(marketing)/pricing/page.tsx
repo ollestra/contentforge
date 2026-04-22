@@ -42,7 +42,7 @@ const PLANS = [
 ]
 
 export default async function PricingPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   let currentPlan = 'free'
