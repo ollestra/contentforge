@@ -10,7 +10,6 @@ import confetti from 'canvas-confetti'
 export default function PaymentSuccessPage() {
   const [balance, setBalance] = useState<number | null>(null)
   const [plan, setPlan] = useState<string>('')
-  const supabase = createClient()
 
   useEffect(() => {
     confetti({
@@ -22,6 +21,7 @@ export default function PaymentSuccessPage() {
 
     // Give webhook time to process, then fetch updated balance
     setTimeout(async () => {
+      const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
       const { data } = await supabase

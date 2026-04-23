@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { Platform } from '@/types/database'
@@ -135,7 +136,7 @@ export default function DashboardClient({
               {/* Thumbnail */}
               <div className="relative aspect-video bg-gray-800">
                 {thumbnail ? (
-                  <img src={thumbnail} alt={project.name} className="w-full h-full object-cover" />
+                  <Image src={thumbnail} alt={project.name} fill className="object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-600 text-4xl">🎬</div>
                 )}

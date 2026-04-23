@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Platform, TonePreset, AudienceTag, User } from '@/types/database'
@@ -48,10 +49,10 @@ export default function NewProjectPage() {
   const [generating, setGenerating] = useState(false)
   const [showUpgrade, setShowUpgrade] = useState(false)
   const router = useRouter()
-  const supabase = createClient()
 
   useEffect(() => {
     async function loadProfile() {
+      const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
       const { data } = await supabase.from('users').select('*').eq('id', user.id).single()
@@ -187,10 +188,12 @@ export default function NewProjectPage() {
       {videoMeta && (
         <div className="bg-gray-900 rounded-2xl border border-gray-800 p-4 mb-4 flex gap-4">
           {videoMeta.thumbnail && (
-            <img
+            <Image
               src={videoMeta.thumbnail}
               alt={videoMeta.title}
-              className="w-32 h-20 object-cover rounded-lg flex-shrink-0"
+              width={128}
+              height={80}
+              className="object-cover rounded-lg flex-shrink-0"
             />
           )}
           <div>
