@@ -31,8 +31,8 @@ export default function Navbar({ creditBalance, userId }: NavbarProps) {
   return (
     <nav className="border-b border-gray-800 bg-gray-900/80 backdrop-blur-sm sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
-        <Link href="/dashboard" className="text-white font-bold text-xl">
-          Content<span className="text-indigo-400">Forge</span>
+        <Link href="/dashboard" className="font-extrabold text-xl bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">
+          Ollestra
         </Link>
 
         <div className="flex items-center gap-4">

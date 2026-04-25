@@ -15,8 +15,8 @@ const geistMono = localFont({
 })
 
 export const metadata: Metadata = {
-  title: 'ContentForge — Repurpose YouTube videos into social content',
-  description: 'AI-powered content repurposing. Convert YouTube videos into LinkedIn posts, tweets, Instagram captions and more.',
+  title: 'Ollestra — Repurpose at will',
+  description: 'Turn any YouTube video into platform-ready content for LinkedIn, X, Instagram and more — in seconds. AI-powered content repurposing.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

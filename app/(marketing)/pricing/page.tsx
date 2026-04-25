@@ -63,7 +63,7 @@ export default async function PricingPage() {
             ← Back to dashboard
           </Link>
           <h1 className="text-4xl font-bold text-white mb-4">Simple, transparent pricing</h1>
-          <p className="text-gray-400 text-lg">Create once, distribute everywhere</p>
+          <p className="text-gray-400 text-lg">Start free. Scale when you need to.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -72,13 +72,13 @@ export default async function PricingPage() {
               key={plan.id}
               className={`relative bg-gray-900 rounded-2xl border p-6 flex flex-col ${
                 plan.highlighted
-                  ? 'border-indigo-500 ring-2 ring-indigo-500/30'
+                  ? 'border-violet-500 ring-2 ring-violet-500/20'
                   : 'border-gray-800'
               }`}
             >
               {plan.highlighted && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                  <span className="bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                  <span className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full">
                     ★ Most Popular
                   </span>
                 </div>
