@@ -59,7 +59,7 @@ body {
 .prose-dark ol { @apply list-decimal pl-6 mb-4 space-y-1 text-gray-300; }
 .prose-dark blockquote { @apply border-l-4 border-violet-500/40 pl-4 italic text-gray-400 my-6; }
 .prose-dark code { @apply bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono text-violet-300; }
-.prose-dark pre { @apply bg-white/5 border border-white/8 p-4 rounded-lg mb-4 overflow-x-auto; }
+.prose-dark pre { @apply bg-white/5 border border-white/10 p-4 rounded-lg mb-4 overflow-x-auto; }
 .prose-dark pre code { @apply bg-transparent p-0 text-gray-300; }
 .prose-dark a { @apply text-violet-400 underline hover:text-violet-300 transition-colors; }
 .prose-dark strong { @apply font-semibold text-white; }
