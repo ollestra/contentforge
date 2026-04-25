@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import FeaturedImageUpload from '@/components/blog/FeaturedImageUpload'
 
 const TipTapEditor = dynamic(() => import('@/components/blog/TipTapEditor'), { ssr: false })
 
@@ -23,6 +24,8 @@ export default function NewPostPage() {
   const [status, setStatus] = useState<'draft' | 'published'>('draft')
   const [metaDescription, setMetaDescription] = useState('')
   const [tags, setTags] = useState('')
+  const [featuredImage, setFeaturedImage] = useState('')
+  const [featuredImageAlt, setFeaturedImageAlt] = useState('')
   const [categories, setCategories] = useState<Category[]>([])
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -56,6 +59,8 @@ export default function NewPostPage() {
           status: postStatus,
           meta_description: metaDescription,
           tags,
+          featured_image: featuredImage || null,
+          featured_image_alt: featuredImageAlt || null,
         }),
       })
       if (!res.ok) {
@@ -142,9 +147,7 @@ export default function NewPostPage() {
             >
               <option value="">Select category</option>
               {categories.map(c => (
-                <option key={c.id} value={c.slug}>
-                  {c.name}
-                </option>
+                <option key={c.id} value={c.slug}>{c.name}</option>
               ))}
             </select>
           </div>
@@ -161,6 +164,13 @@ export default function NewPostPage() {
             />
             <p className="text-xs text-gray-400 mt-1">/blog/{slug || '...'}</p>
           </div>
+
+          <FeaturedImageUpload
+            url={featuredImage}
+            alt={featuredImageAlt}
+            onUrlChange={setFeaturedImage}
+            onAltChange={setFeaturedImageAlt}
+          />
 
           <div>
             <label className="block text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide">

@@ -1,6 +1,7 @@
 import { getPostBySlug } from '@/lib/blog'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import type { Metadata } from 'next'
 import BlogPostContent from '@/components/blog/BlogPostContent'
 
@@ -41,6 +42,9 @@ export async function generateMetadata({
     openGraph: {
       title: post.title,
       description: post.meta_description ?? '',
+      ...(post.featured_image && {
+        images: [{ url: post.featured_image, alt: post.featured_image_alt ?? post.title }],
+      }),
     },
   }
 }
@@ -126,6 +130,19 @@ export default async function BlogPostPage({
           <p className="text-lg text-gray-400 mb-10 leading-relaxed border-l-2 border-violet-500/40 pl-4">
             {post.meta_description}
           </p>
+        )}
+
+        {post.featured_image && (
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-10 border border-white/10">
+            <Image
+              src={post.featured_image}
+              alt={post.featured_image_alt ?? post.title}
+              fill
+              className="object-cover"
+              priority
+             
+            />
+          </div>
         )}
 
         <hr className="border-white/10 mb-10" />

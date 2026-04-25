@@ -4,6 +4,8 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TipTapLink from '@tiptap/extension-link'
 import Placeholder from '@tiptap/extension-placeholder'
+import Image from '@tiptap/extension-image'
+import { useRef } from 'react'
 
 interface TipTapEditorProps {
   content?: string
@@ -11,11 +13,13 @@ interface TipTapEditorProps {
 }
 
 export default function TipTapEditor({ content = '', onChange }: TipTapEditorProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const editor = useEditor({
     extensions: [
       StarterKit,
       TipTapLink.configure({ openOnClick: false }),
       Placeholder.configure({ placeholder: 'Write your post content...' }),
+      Image.configure({ HTMLAttributes: { class: 'rounded-lg max-w-full' } }),
     ],
     content,
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
@@ -51,6 +55,20 @@ export default function TipTapEditor({ content = '', onChange }: TipTapEditorPro
   }
 
   const Sep = () => <div className="w-px h-4 bg-gray-300 mx-1 self-center" />
+
+  async function handleImageFile(file: File) {
+    const alt = window.prompt('Image alt text (for SEO and accessibility):') ?? ''
+    const form = new FormData()
+    form.append('file', file)
+    const res = await fetch('/api/blog/images', { method: 'POST', body: form })
+    if (!res.ok) {
+      const d = await res.json()
+      alert(d.error ?? 'Upload failed')
+      return
+    }
+    const { url } = await res.json()
+    editor.chain().focus().setImage({ src: url, alt }).run()
+  }
 
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden">
@@ -103,10 +121,26 @@ export default function TipTapEditor({ content = '', onChange }: TipTapEditorPro
         >
           Link
         </Btn>
+        <Btn onClick={() => fileInputRef.current?.click()}>
+          🖼 Image
+        </Btn>
         <Sep />
         <Btn onClick={() => editor.chain().focus().undo().run()}>↩</Btn>
         <Btn onClick={() => editor.chain().focus().redo().run()}>↪</Btn>
       </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/gif"
+        className="hidden"
+        onChange={e => {
+          const file = e.target.files?.[0]
+          if (file) handleImageFile(file)
+          e.target.value = ''
+        }}
+      />
+
       <EditorContent editor={editor} />
     </div>
   )

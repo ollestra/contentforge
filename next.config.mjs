@@ -4,6 +4,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'img.youtube.com' },
       { protocol: 'https', hostname: 'i.ytimg.com' },
+      { protocol: 'https', hostname: '*.supabase.co' },
     ],
   },
   serverExternalPackages: [],
@@ -22,7 +23,7 @@ const nextConfig = {
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: https://img.youtube.com https://i.ytimg.com",
+              "img-src 'self' data: https://img.youtube.com https://i.ytimg.com https://*.supabase.co",
               "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.googleapis.com",
               "font-src 'self'",
               "frame-src 'none'",

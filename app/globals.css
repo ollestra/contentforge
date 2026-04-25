@@ -64,3 +64,4 @@ body {
 .prose-dark a { @apply text-violet-400 underline hover:text-violet-300 transition-colors; }
 .prose-dark strong { @apply font-semibold text-white; }
 .prose-dark em { @apply italic text-gray-300; }
+.prose-dark img { @apply rounded-lg max-w-full my-6; }

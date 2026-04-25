@@ -9,6 +9,8 @@ export type Post = {
   status: 'draft' | 'published'
   meta_description?: string | null
   tags?: string | null
+  featured_image?: string | null
+  featured_image_alt?: string | null
   created_at: string
   updated_at: string
 }
