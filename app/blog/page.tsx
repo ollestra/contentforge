@@ -97,7 +97,7 @@ export default async function BlogPage() {
         {featured && (
           <Link
             href={`/blog/${featured.slug}`}
-            className="group block mb-12 rounded-2xl border border-white/8 bg-white/3 hover:bg-white/5 hover:border-white/15 transition-all overflow-hidden"
+            className="group block mb-12 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/5 hover:border-white/20 transition-all overflow-hidden"
           >
             <div className="p-8 sm:p-10 flex flex-col sm:flex-row gap-8 items-start">
               <div className="flex-1 min-w-0">
@@ -124,7 +124,7 @@ export default async function BlogPage() {
                   </svg>
                 </span>
               </div>
-              <div className="hidden sm:flex shrink-0 w-48 h-32 rounded-xl bg-gradient-to-br from-violet-500/20 to-indigo-500/20 border border-white/8 items-center justify-center">
+              <div className="hidden sm:flex shrink-0 w-48 h-32 rounded-xl bg-gradient-to-br from-violet-500/20 to-indigo-500/20 border border-white/10 items-center justify-center">
                 <svg className="w-10 h-10 text-violet-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                 </svg>
@@ -146,7 +146,7 @@ export default async function BlogPage() {
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="group flex flex-col rounded-xl border border-white/8 bg-white/3 hover:bg-white/5 hover:border-white/15 transition-all p-6"
+                  className="group flex flex-col rounded-xl border border-white/10 bg-white/5 hover:bg-white/5 hover:border-white/20 transition-all p-6"
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <span className={`text-xs px-2.5 py-0.5 rounded-full border capitalize font-medium ${categoryClass(post.category)}`}>

@@ -128,7 +128,7 @@ export default async function BlogPostPage({
           </p>
         )}
 
-        <hr className="border-white/8 mb-10" />
+        <hr className="border-white/10 mb-10" />
 
         {/* Body */}
         <div
