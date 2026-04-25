@@ -115,6 +115,9 @@ export default async function HomePage() {
             Ollestra
           </span>
           <div className="flex items-center gap-2">
+            <Link href="/blog" className="text-gray-400 hover:text-white text-sm px-3 py-2 transition-colors hidden sm:block">
+              Blog
+            </Link>
             <Link href="#pricing" className="text-gray-400 hover:text-white text-sm px-3 py-2 transition-colors hidden sm:block">
               Pricing
             </Link>
@@ -434,6 +437,7 @@ export default async function HomePage() {
             Ollestra
           </span>
           <div className="flex gap-6 text-sm text-gray-500">
+            <Link href="/blog" className="hover:text-gray-300 transition-colors">Blog</Link>
             <Link href="#pricing" className="hover:text-gray-300 transition-colors">Pricing</Link>
             <Link href="/login" className="hover:text-gray-300 transition-colors">Sign in</Link>
             <Link href="/signup" className="hover:text-gray-300 transition-colors">Get started</Link>

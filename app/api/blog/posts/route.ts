@@ -2,11 +2,13 @@ import { createPost, getPosts } from '@/lib/blog'
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'ollestraa@gmail.com'
+
 async function isAdmin() {
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    return user?.email === process.env.ADMIN_EMAIL
+    return user?.email === ADMIN_EMAIL
   } catch {
     return false
   }
