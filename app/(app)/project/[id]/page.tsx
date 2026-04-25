@@ -186,7 +186,11 @@ function OutputCard({ platform, outputs, onSave }: OutputCardProps) {
   )
 }
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
 export default function ProjectPage({ params }: { params: { id: string } }) {
+  if (!UUID_RE.test(params.id)) return <div className="p-8 text-gray-400">Invalid project.</div>
+
   const [job, setJob] = useState<Job | null>(null)
   const [outputs, setOutputs] = useState<Output[]>([])
   const [projectName, setProjectName] = useState('')

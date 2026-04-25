@@ -1,18 +1,6 @@
 import { deleteCategory } from '@/lib/blog'
-import { createClient } from '@/lib/supabase/server'
+import { isAdmin } from '@/lib/admin-auth'
 import { NextResponse } from 'next/server'
-
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'ollestraa@gmail.com'
-
-async function isAdmin() {
-  try {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    return user?.email === ADMIN_EMAIL
-  } catch {
-    return false
-  }
-}
 
 export async function DELETE(
   _req: Request,

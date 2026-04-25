@@ -70,9 +70,7 @@ export default function NewProjectPage() {
     setFetchingMeta(true)
     setUrlError('')
     try {
-      const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?id=${id}&part=snippet&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY ?? ''}`
-      )
+      const res = await fetch(`/api/youtube/video?id=${id}`)
       const data = await res.json()
       if (!data.items?.length) {
         setUrlError('Video not found or is private.')

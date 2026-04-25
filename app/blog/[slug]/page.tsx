@@ -2,6 +2,7 @@ import { getPostBySlug } from '@/lib/blog'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import DOMPurify from 'isomorphic-dompurify'
 
 export const dynamic = 'force-dynamic'
 
@@ -132,7 +133,7 @@ export default async function BlogPostPage({
         {/* Body */}
         <div
           className="blog-content prose-dark"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
         />
 
       </article>
