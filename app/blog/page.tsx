@@ -1,52 +1,176 @@
 import { getPublishedPosts } from '@/lib/blog'
 import Link from 'next/link'
 
-function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, '').trim().slice(0, 120)
+export const dynamic = 'force-dynamic'
+
+function readingTime(html: string): string {
+  const words = html.replace(/<[^>]*>/g, '').trim().split(/\s+/).length
+  const mins = Math.max(1, Math.round(words / 200))
+  return `${mins} min read`
+}
+
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
+const CATEGORY_COLORS: Record<string, string> = {
+  tutorial:   'bg-violet-500/10 text-violet-300 border-violet-500/20',
+  guide:      'bg-indigo-500/10 text-indigo-300 border-indigo-500/20',
+  update:     'bg-cyan-500/10    text-cyan-300    border-cyan-500/20',
+  news:       'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
+  tips:       'bg-amber-500/10   text-amber-300   border-amber-500/20',
+}
+
+function categoryClass(cat: string) {
+  return (
+    CATEGORY_COLORS[cat.toLowerCase()] ??
+    'bg-white/5 text-gray-400 border-white/10'
+  )
 }
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts()
+  const [featured, ...rest] = posts
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Blog</h1>
-        <p className="text-gray-500 mb-12">Tips, guides, and product updates.</p>
+    <div className="min-h-screen bg-gray-950 text-white">
 
-        <div className="grid sm:grid-cols-2 gap-6">
-          {posts.map(post => (
+      {/* Nav */}
+      <nav className="sticky top-0 z-50 border-b border-white/5 bg-gray-950/80 backdrop-blur-xl">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link
+            href="/"
+            className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent"
+          >
+            Ollestra
+          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/blog" className="text-white text-sm px-3 py-2">
+              Blog
+            </Link>
+            <Link href="/#pricing" className="text-gray-400 hover:text-white text-sm px-3 py-2 transition-colors hidden sm:block">
+              Pricing
+            </Link>
+            <Link href="/login" className="text-gray-400 hover:text-white text-sm px-3 py-2 transition-colors">
+              Sign in
+            </Link>
             <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="group block border border-gray-200 rounded-xl p-6 hover:border-gray-400 transition-colors"
+              href="/signup"
+              className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-all"
             >
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full capitalize">
-                  {post.category}
-                </span>
-                <span className="text-xs text-gray-400">
-                  {new Date(post.created_at).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })}
+              Start free
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="relative px-6 pt-20 pb-16 text-center overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-violet-600/15 via-indigo-600/8 to-transparent rounded-full blur-3xl" />
+        </div>
+        <div className="relative max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs px-4 py-1.5 rounded-full mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+            Tips, guides &amp; product updates
+          </div>
+          <h1 className="text-5xl font-extrabold tracking-tight bg-gradient-to-r from-white via-gray-100 to-gray-400 bg-clip-text text-transparent mb-4">
+            The Blog
+          </h1>
+          <p className="text-gray-400 text-lg">
+            Everything you need to repurpose content faster and grow on every platform.
+          </p>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-6 pb-24">
+
+        {posts.length === 0 && (
+          <p className="text-gray-500 text-center py-24">No posts published yet.</p>
+        )}
+
+        {/* Featured post */}
+        {featured && (
+          <Link
+            href={`/blog/${featured.slug}`}
+            className="group block mb-12 rounded-2xl border border-white/8 bg-white/3 hover:bg-white/5 hover:border-white/15 transition-all overflow-hidden"
+          >
+            <div className="p-8 sm:p-10 flex flex-col sm:flex-row gap-8 items-start">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className={`text-xs px-2.5 py-0.5 rounded-full border capitalize font-medium ${categoryClass(featured.category)}`}>
+                    {featured.category}
+                  </span>
+                  <span className="text-xs text-gray-500">{formatDate(featured.created_at)}</span>
+                  <span className="text-xs text-gray-600">·</span>
+                  <span className="text-xs text-gray-500">{readingTime(featured.content)}</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 group-hover:text-violet-300 transition-colors leading-snug">
+                  {featured.title}
+                </h2>
+                {featured.meta_description && (
+                  <p className="text-gray-400 text-base leading-relaxed line-clamp-2 mb-6">
+                    {featured.meta_description}
+                  </p>
+                )}
+                <span className="inline-flex items-center gap-1.5 text-sm text-violet-400 group-hover:gap-2.5 transition-all font-medium">
+                  Read article
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
                 </span>
               </div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-gray-600 transition-colors">
-                {post.title}
+              <div className="hidden sm:flex shrink-0 w-48 h-32 rounded-xl bg-gradient-to-br from-violet-500/20 to-indigo-500/20 border border-white/8 items-center justify-center">
+                <svg className="w-10 h-10 text-violet-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+        )}
+
+        {/* Grid */}
+        {rest.length > 0 && (
+          <>
+            {featured && (
+              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-6">
+                More posts
               </h2>
-              <p className="text-sm text-gray-500 line-clamp-2">
-                {post.meta_description || stripHtml(post.content)}
-              </p>
-            </Link>
-          ))}
-          {posts.length === 0 && (
-            <p className="text-gray-400 col-span-2 py-16 text-center">
-              No posts published yet.
-            </p>
-          )}
-        </div>
+            )}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {rest.map(post => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group flex flex-col rounded-xl border border-white/8 bg-white/3 hover:bg-white/5 hover:border-white/15 transition-all p-6"
+                >
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className={`text-xs px-2.5 py-0.5 rounded-full border capitalize font-medium ${categoryClass(post.category)}`}>
+                      {post.category}
+                    </span>
+                  </div>
+                  <h3 className="text-base font-semibold text-white mb-2 group-hover:text-violet-300 transition-colors leading-snug line-clamp-2 flex-1">
+                    {post.title}
+                  </h3>
+                  {post.meta_description && (
+                    <p className="text-sm text-gray-500 line-clamp-2 mb-4">
+                      {post.meta_description}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-2 mt-auto pt-4 border-t border-white/5 text-xs text-gray-600">
+                    <span>{formatDate(post.created_at)}</span>
+                    <span>·</span>
+                    <span>{readingTime(post.content)}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

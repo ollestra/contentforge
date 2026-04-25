@@ -1,5 +1,6 @@
 import { getPostById, updatePost, deletePost } from '@/lib/blog'
 import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'ollestraa@gmail.com'
@@ -35,6 +36,8 @@ export async function PATCH(
   const body = await request.json()
   try {
     const post = await updatePost(id, body)
+    revalidatePath('/blog')
+    revalidatePath(`/blog/${post.slug}`)
     return NextResponse.json(post)
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 400 })

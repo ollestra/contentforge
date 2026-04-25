@@ -1,5 +1,6 @@
 import { createPost, getPosts } from '@/lib/blog'
 import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'ollestraa@gmail.com'
@@ -37,6 +38,7 @@ export async function POST(request: Request) {
   }
   try {
     const post = await createPost(body)
+    revalidatePath('/blog')
     return NextResponse.json(post, { status: 201 })
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 400 })
